@@ -21,7 +21,7 @@ jobs:
         exit 1
     - name: Show Result
       run: |
-        echo "Pipeline Id : "${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}
+        echo 'Pipeline Id : ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}'
     - name: Get Pipeline Details
       id: getPipelineDetails
       uses: fjogeleit/http-request-action@v1
@@ -31,7 +31,8 @@ jobs:
         customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
     - name: Show Result
       run: |
-        echo "Pipeline Id : ${{ fromJson(steps.getPipelineDetails.outputs.response)}}'
+        echo 'Pipeline Details : ${{ fromJson(steps.getPipelineDetails.outputs.response)}}'
+        jq -r
       
     #- name: Get Pipeline Details
     #  id: getPipelineDetails
