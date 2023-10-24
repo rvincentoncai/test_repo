@@ -32,7 +32,7 @@ jobs:
     - name: Get Execution Id
       id: getExecutionId
       run: |
-        pipelineDetails=${{ steps.getPipelineDetails.outputs.response }}
+        pipelineDetails=echo "${{ steps.getPipelineDetails.outputs.response }}"
         echo "$pipelineDetails" | jq -r '.nodes[] | select(.name == "1-generate-pipeline-parameters-node").id'
         echo $pipelineDetails | jq -r '.nodes[] | select(.name == "1-generate-pipeline-parameters-node").id'
 #        echo "EXECUTION_ID=$executionId" >> "$GITHUB_OUTPUT"
