@@ -29,10 +29,21 @@ jobs:
         url: 'https://app.valohai.com/api/v0/pipelines/${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}'
         method: 'GET'
         customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
+    - name: Get Execution Id
+      id: getExecutionId
+      run: |
+        executionId=$(echo ${{ fromJson(steps.getPipelineDetails.outputs.response) }} | | jq -r '.nodes[] | select(.name == "1-generate-pipeline-parameters-node").id')
+        echo $executionId >> "$EXECUTION_ID"
+    - name: Get VH Execution By Id
+      id: getExecutionById
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://app.valohai.com/api/v0/pipelines/${{ steps.getExecutionId.outputs.EXECUTION_ID }}'
+        method: 'GET'
+        customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
     - name: Show Result
       run: |
-        echo 'Pipeline Details : ${{ fromJson(steps.getPipelineDetails.outputs.response)}}'
-        jq -r
+        echo 'Commit Id : ${{ fromJson(steps.getExecutionById.outputs.response).commit.identifier }}'
       
     #- name: Get Pipeline Details
     #  id: getPipelineDetails
