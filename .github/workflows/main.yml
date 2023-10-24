@@ -1,0 +1,21 @@
+name: Update Annotations QC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get VH Pipeline Details
+      id: getLatestVHPipeline
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://app.valohai.com/api/v0/pipelines/'
+        method: 'POST'
+        bearerToken: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
+        customHeaders: '{"Content-Type": "application/json"}'
+        data: '{"limit": "1", "project": "dataset_generation", "pipeline": "generate-dataset-train-evaluate-predict"}'
+    - name: Show Result
+      run: |
+        echo ${{ steps.getLatestVHPipeline.outputs.response }}
