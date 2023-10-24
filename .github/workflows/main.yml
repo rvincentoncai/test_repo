@@ -7,15 +7,21 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     steps:
-    - name: Get VH Pipeline Details
+    - name: Get Latest VH Pipeline
       id: getLatestVHPipeline
       uses: fjogeleit/http-request-action@v1
       with:
         url: 'https://app.valohai.com/api/v0/pipelines/?project=017d9b49-9e46-865d-07dd-82c4c6e2eb29&ordering=-ctime&limit=1'
         method: 'GET'
         customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
-        data: '{"limit": "1", "project": "017d9b49-9e46-865d-07dd-82c4c6e2eb29", "pipeline": "generate-dataset-train-evaluate-predict"}'
+    - name: If not pipeline name
+      if: ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].title }} != "Weekly Pipeline generate-dataset-train-evaluate-predict" && ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].status }} != "complete"
+      run: |
+        exit 1
     - name: Show Result
       run: |
-        echo ${{ steps.getLatestVHPipeline.outputs.response }}
-        echo ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}
+        echo "Pipeline Id : "${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}
+    #- name: Get Pipeline Details
+    #  id: getPipelineDetails
+    #  uses: 
+      
