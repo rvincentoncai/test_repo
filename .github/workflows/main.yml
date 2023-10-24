@@ -17,4 +17,5 @@ jobs:
         data: '{"limit": "1", "project": "017d9b49-9e46-865d-07dd-82c4c6e2eb29", "pipeline": "generate-dataset-train-evaluate-predict"}'
     - name: Show Result
       run: |
-        echo ${{ fromJson(steps.getLatestVHPipeline.outputs.response) }}
+        echo ${{ steps.getLatestVHPipeline.outputs.response }}
+        echo ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}
