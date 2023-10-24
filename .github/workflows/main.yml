@@ -34,7 +34,7 @@ jobs:
       run: |
         pipelineDetails=${{ steps.getPipelineDetails.outputs.response }}
         executionId=$(echo $pipelineDetails | jq -r '.nodes[] | select(.name == "1-generate-pipeline-parameters-node").id')
-        echo "EXECUTION_ID=$executionId" >> "$GITHUB_OUTPUT"
+#        echo "EXECUTION_ID=$executionId" >> "$GITHUB_OUTPUT"
     - name: Get VH Execution By Id
       id: getExecutionById
       uses: fjogeleit/http-request-action@v1
