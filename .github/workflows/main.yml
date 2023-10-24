@@ -15,7 +15,7 @@ jobs:
         method: 'GET'
         customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
     - name: If not pipeline name
-      if: ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].title }} != "Weekly Pipeline generate-dataset-train-evaluate-predict" && ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].status }} != "complete"
+      if: ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].title != 'Weekly Pipeline generate-dataset-train-evaluate-predict' &&  fromJson(steps.getLatestVHPipeline.outputs.response).results[0].status != 'complete'}}
       run: |
         exit 1
     - name: Show Result
