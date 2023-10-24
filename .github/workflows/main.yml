@@ -17,10 +17,22 @@ jobs:
     - name: If not pipeline name
       if: ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].title != 'Weekly Pipeline generate-dataset-train-evaluate-predict' &&  fromJson(steps.getLatestVHPipeline.outputs.response).results[0].status != 'complete'}}
       run: |
+        echo "Error fetching Weekly Pipeline. Please check the VH Weekly PIpeline run and check the status."
         exit 1
     - name: Show Result
       run: |
         echo "Pipeline Id : "${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}
+    - name: Get Pipeline Details
+      id: getPipelineDetails
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://app.valohai.com/api/v0/pipelines/${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}'
+        method: 'GET'
+        customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
+    - name: Show Result
+      run: |
+        echo "Pipeline Id : ${{ fromJson(steps.getPipelineDetails.outputs.response)}}'
+      
     #- name: Get Pipeline Details
     #  id: getPipelineDetails
     #  uses: 
