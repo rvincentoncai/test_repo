@@ -33,7 +33,7 @@ jobs:
       id: getExecutionId
       run: |
         pipelineDetails=$(echo '${{ steps.getPipelineDetails.outputs.response }}')
-        executionId=$(echo $pipelineDetails | jq -r '.nodes[] | select(.name == "1-generate-pipeline-parameters-node").id')
+        executionId=$(echo $pipelineDetails | jq -r '.nodes[] | select(.name == "1-generate-pipeline-parameters-node").execution.id')
         echo "EXECUTION_ID=$executionId" >> "$GITHUB_OUTPUT"
     - name: Get VH Execution By Id
       id: getExecutionById
