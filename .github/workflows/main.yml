@@ -13,7 +13,7 @@ jobs:
       with:
         url: 'https://app.valohai.com/api/v0/pipelines/'
         method: 'POST'
-        bearerToken: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
+        bearerToken: 'Authorization: Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l'
         customHeaders: '{"Content-Type": "application/json"}'
         data: '{"limit": "1", "project": "dataset_generation", "pipeline": "generate-dataset-train-evaluate-predict"}'
     - name: Show Result
