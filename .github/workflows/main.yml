@@ -39,12 +39,13 @@ jobs:
       id: getExecutionById
       uses: fjogeleit/http-request-action@v1
       with:
-        url: 'https://app.valohai.com/api/v0/pipelines/${{ steps.getExecutionId.outputs.EXECUTION_ID }}'
+        url: 'https://app.valohai.com/api/v0/executions/${{ steps.getExecutionId.outputs.EXECUTION_ID }}'
         method: 'GET'
         customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
-    - name: Show Result
+    - name: Log Commit Id
       run: |
         echo 'Commit Id : ${{ fromJson(steps.getExecutionById.outputs.response).commit.identifier }}'
+        echo "COMMIT_ID=${{ fromJson(steps.getExecutionById.outputs.response).commit.identifier }}" >> "$GITHUB_OUTPUT"
       
     #- name: Get Pipeline Details
     #  id: getPipelineDetails
