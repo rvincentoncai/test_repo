@@ -59,14 +59,14 @@ jobs:
     #     url: 'https://app.valohai.com/api/v0/projects/${{ vars.VH_PROJECT_ANNOTATIONS_UUID }}/fetch/'
     #     method: 'POST'
     #     customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
-    - name: Fetch Repo in Annotations Test Project
-      id: fetchAnnotationsProjectTest
-      uses: fjogeleit/http-request-action@v1
-      with:
-        url: 'https://app.valohai.com/api/v0/projects/${{ vars.VH_PROJECT_ANNOTATIONS_TEST_UUID }}/fetch/'
-        method: 'POST'
-        customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
-        timeout: 60000
+    # - name: Fetch Repo in Annotations Test Project
+    #   id: fetchAnnotationsProjectTest
+    #   uses: fjogeleit/http-request-action@v1
+    #   with:
+    #     url: 'https://app.valohai.com/api/v0/projects/${{ vars.VH_PROJECT_ANNOTATIONS_TEST_UUID }}/fetch/'
+    #     method: 'POST'
+    #     customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
+    #     timeout: 60000
         # ignoreStatusCodes: '504'
     # - name: Fetch Project in Annotations Staging Project
     #   id: fetchAnnotationsProjectStaging
@@ -85,6 +85,7 @@ jobs:
         customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
     - name: Show Result
       run: |
+        echo "Commit Id : ${{ steps.logCommitId.outputs.COMMIT_ID }}"
         echo '${{ steps.getCommitsInTestProj.outputs.response }}'
         commitDetails=$(echo '${{ steps.getCommitsInTestProj.outputs.response }}')
         branchName=$(echo $commitDetails | jq -r '.[] | select(.identifier | contains("${{ steps.logCommitId.outputs.COMMIT_ID }}")).ref')
