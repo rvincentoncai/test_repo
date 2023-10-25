@@ -11,7 +11,7 @@ jobs:
       id: getLatestVHPipeline
       uses: fjogeleit/http-request-action@v1
       with:
-        url: 'https://app.valohai.com/api/v0/pipelines/?project=017d9b49-9e46-865d-07dd-82c4c6e2eb29&ordering=-ctime&limit=1'
+        url: 'https://app.valohai.com/api/v0/pipelines/?project=${{ vars.VH_PROJECT_UUID }}&ordering=-ctime&limit=1'
         method: 'GET'
         customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
     - name: If not pipeline name
