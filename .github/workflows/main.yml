@@ -43,11 +43,13 @@ jobs:
         method: 'GET'
         customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
     - name: Log Commit Id
+      id: logCommitId
       run: |
         echo 'Commit Id : ${{ fromJson(steps.getExecutionById.outputs.response).commit.identifier }}'
         echo "COMMIT_ID=${{ fromJson(steps.getExecutionById.outputs.response).commit.identifier }}" >> "$GITHUB_OUTPUT"
-      
-    #- name: Get Pipeline Details
-    #  id: getPipelineDetails
-    #  uses: 
+    - name: Create Tag
+      uses: actions/checkout@v4
+      with:
+        repository: 'oncai/nsclc-classifier'
+        ref: 'develop'
       
