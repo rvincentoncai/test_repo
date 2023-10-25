@@ -14,7 +14,7 @@ jobs:
       id: getLatestVHPipeline
       uses: fjogeleit/http-request-action@v1
       with:
-        url: 'https://app.valohai.com/api/v0/pipelines/?project=${{ vars.VH_PROJECT_UUID }}&ordering=-ctime&limit=1'
+        url: 'https://app.valohai.com/api/v0/pipelines/?project=${{ vars.VH_PROJECT_DATASET_GENERATION_UUID }}&ordering=-ctime&limit=1'
         method: 'GET'
         customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
     - name: If not pipeline name
@@ -86,7 +86,6 @@ jobs:
     - name: Show Result
       run: |
         echo "Commit Id : ${{ steps.logCommitId.outputs.COMMIT_ID }}"
-        echo '${{ steps.getCommitsInTestProj.outputs.response }}'
         commitDetails=$(echo '${{ steps.getCommitsInTestProj.outputs.response }}')
         branchName=$(echo $commitDetails | jq -r '.[] | select(.identifier | contains("${{ steps.logCommitId.outputs.COMMIT_ID }}")).ref')
         echo "Branch Name : $branchName"
