@@ -7,6 +7,9 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     steps:
+    
+    # The steps below fetch the commit id from the most recent
+    # weekly pipeline Run.
     - name: Get Latest VH Pipeline
       id: getLatestVHPipeline
       uses: fjogeleit/http-request-action@v1
@@ -47,10 +50,36 @@ jobs:
       run: |
         echo 'Commit Id : ${{ fromJson(steps.getExecutionById.outputs.response).commit.identifier }}'
         echo "COMMIT_ID=${{ fromJson(steps.getExecutionById.outputs.response).commit.identifier }}" >> "$GITHUB_OUTPUT"
-    - name: Create Tag
-      uses: actions/checkout@v4
+
+    # Fetch the repository in the annotation projects.
+    - name: Fetch Project in Annotations Prod Project
+      id: fetchAnnotationsProjectProd
+      uses: fjogeleit/http-request-action@v1
       with:
-        repository: 'oncai/nsclc-classifier'
-        ref: 'develop'
-        token: '${{ secrets.GI_PAT_SECRET }}'
+        url: 'https://app.valohai.com/api/v0/projects/${{ vars.VH_PROJECT_ANNOTATIONS_UUID }}/fetch/'
+        method: 'POST'
+        customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
+    - name: Fetch Project in Annotations Test Project
+      id: fetchAnnotationsProjectTest
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://app.valohai.com/api/v0/projects/${{ vars.VH_PROJECT_ANNOTATIONS_TEST_UUID }}/fetch/'
+        method: 'POST'
+        customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
+    - name: Fetch Project in Annotations Staging Project
+      id: fetchAnnotationsProjectStaging
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://app.valohai.com/api/v0/projects/${{ vars.VH_PROJECT_ANNOTATIONS_STAGING_UUID }}/fetch/'
+        method: 'POST'
+        customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
+    - name: Show Result
+      run: |
+        echo '${{ steps.fetchAnnotationsProjectStaging.outputs.response }}'
+    # - name: Create Tag
+    #   uses: actions/checkout@v4
+    #   with:
+    #     repository: 'oncai/nsclc-classifier'
+    #     ref: 'develop'
+    #     token: '${{ secrets.GI_PAT_SECRET }}'
       
