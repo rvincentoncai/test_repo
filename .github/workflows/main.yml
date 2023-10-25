@@ -13,7 +13,7 @@ jobs:
       with:
         url: 'https://app.valohai.com/api/v0/pipelines/?project=017d9b49-9e46-865d-07dd-82c4c6e2eb29&ordering=-ctime&limit=1'
         method: 'GET'
-        customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
+        customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
     - name: If not pipeline name
       if: ${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].title != 'Weekly Pipeline generate-dataset-train-evaluate-predict' &&  fromJson(steps.getLatestVHPipeline.outputs.response).results[0].status != 'complete'}}
       run: |
@@ -28,7 +28,7 @@ jobs:
       with:
         url: 'https://app.valohai.com/api/v0/pipelines/${{ fromJson(steps.getLatestVHPipeline.outputs.response).results[0].id }}'
         method: 'GET'
-        customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
+        customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
     - name: Get Execution Id
       id: getExecutionId
       run: |
@@ -41,7 +41,7 @@ jobs:
       with:
         url: 'https://app.valohai.com/api/v0/executions/${{ steps.getExecutionId.outputs.EXECUTION_ID }}'
         method: 'GET'
-        customHeaders: '{"Authorization": "Token uWWnzXsWLEPITvMqKCGUGARuSP2RwL9kg5xYd94l"}'
+        customHeaders: '{"Authorization": "Token ${{ secrets.VH_TOKEN }}"}'
     - name: Log Commit Id
       id: logCommitId
       run: |
@@ -52,5 +52,5 @@ jobs:
       with:
         repository: 'oncai/nsclc-classifier'
         ref: 'develop'
-        token: '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'
+        token: '${{ secrets.GI_PAT_SECRET }}'
       
