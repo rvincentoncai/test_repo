@@ -52,4 +52,5 @@ jobs:
       with:
         repository: 'oncai/nsclc-classifier'
         ref: 'develop'
+        token: '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'
       
